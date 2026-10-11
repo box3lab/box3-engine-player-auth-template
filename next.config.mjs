@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 export default {
     assetPrefix: process.env.BOX_APP_BASE_PATH || '',
+    basePath: process.env.NODE_ENV === 'development' ? process.env.BOX_APP_BASE_PATH || '' : '',
     compress: false,
     poweredByHeader: false,
     productionBrowserSourceMaps: false,

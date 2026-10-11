@@ -56,13 +56,16 @@ if (isDevelopment) {
 
 // 启动器注入 BOX_APP_BASE_PATH；手动部署也可从公开地址获取前缀。
 const raw =
+    process.argv
+        .find((argument) => argument.startsWith('--base-path='))
+        ?.slice('--base-path='.length) ??
     process.env.BOX_APP_BASE_PATH ??
     (process.env.BOX_AUTH_PORTAL_PUBLIC_URL
         ? new URL(process.env.BOX_AUTH_PORTAL_PUBLIC_URL).pathname
         : '');
 const basePath = raw === '/' ? '' : raw.replace(/\/$/, '');
 if (basePath && !/^\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-]+$/.test(basePath)) {
-    throw new Error('BOX_APP_BASE_PATH 须为空或 /login、/accounts/login 这样的路径');
+    throw new Error('BOX_APP_BASE_PATH 须为空或 /login、/accounts 这样的路径');
 }
 process.env.BOX_APP_BASE_PATH = basePath;
 const hostname = process.env.HOST || (isDevelopment ? '127.0.0.1' : '0.0.0.0');
@@ -132,10 +135,12 @@ const server = createServer(async (request, response) => {
         request.headers['x-nonce'] = nonce;
         request.headers['content-security-policy'] = csp;
         response.setHeader('Content-Security-Policy', csp);
-        if (basePath) {
+        if (basePath && !isDevelopment) {
             prefixAssets(response);
         }
-        stripPrefix(request);
+        if (!isDevelopment) {
+            stripPrefix(request);
+        }
         await handle(request, response);
     } catch {
         if (!response.headersSent) {
@@ -146,18 +151,6 @@ const server = createServer(async (request, response) => {
         }
     }
 });
-if (isDevelopment) {
-    server.on('upgrade', (request, socket, head) => {
-        try {
-            stripPrefix(request);
-            void app
-                .getUpgradeHandler()(request, socket, head)
-                .catch(() => socket.destroy());
-        } catch {
-            socket.destroy();
-        }
-    });
-}
 server.listen(port, hostname, () => {
     const localHost = ['0.0.0.0', '::'].includes(hostname) ? 'localhost' : hostname;
     const authority = localHost.includes(':') ? `[${localHost}]` : localHost;

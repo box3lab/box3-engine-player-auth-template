@@ -7,6 +7,7 @@
   "scripts": {
     "check": "node scripts/tasks.mjs check",
     "dev": "node scripts/server.mjs --dev",
+    "dev:path": "node scripts/server.mjs --dev --base-path=/accounts",
     "image": "node scripts/tasks.mjs image"
   },
   "dependencies": {

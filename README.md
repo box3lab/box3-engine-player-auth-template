@@ -46,6 +46,66 @@ npm run dev:path
 
 只构建一种架构可用 `npm run image -- arm64` 或 `npm run image -- amd64`。镜像构建需要 Docker 和 Buildx，产物保存在 `dist/`。
 
+## 架构与 API 流程
+
+### 整体架构
+
+```mermaid
+flowchart TD
+    subgraph browser[玩家浏览器]
+        page["页面与表单 · app / components"]
+        hook["状态与操作 · useAccount"]
+        client["本站请求 · client/account-api"]
+        page --> hook --> client
+    end
+    subgraph portal[本项目登录门户]
+        route["HTTP 路由 · app/api/auth"]
+        business["本站业务与额外鉴权 · server"]
+        sdk["引擎调用与响应过滤 · lib/server"]
+        route --> business --> sdk
+    end
+    client -->|同源请求与 Cookie| route
+    sdk -->|生产：内部地址与服务端密钥| engine["BOX3 本地引擎玩家服务"]
+    sdk -->|开发：BOX_DEV_AUTH_PORTAL_URL| original["启动器中已运行的原门户"]
+    original --> engine
+```
+
+浏览器只访问本站 API；引擎密钥保留在后端。玩家服务负责账号与会话，门户负责页面、请求校验和服主自定义业务。图中生产、开发是两种运行方式。
+
+### 注册、登录与会话查询
+
+```mermaid
+flowchart TD
+    open[打开页面] --> session["GET /api/auth/session"]
+    register["注册表单：先确认两次密码一致"] --> regApi["POST /api/auth/register"]
+    login["登录表单：账号与密码"] --> loginApi["POST /api/auth/login"]
+    session --> check["本站后端：方法、来源、配置与字段校验"]
+    regApi --> check
+    loginApi --> check
+    check --> auth["服主额外鉴权 · 默认放行"]
+    auth --> engine["玩家服务：查询会话 / 创建账号 / 验证登录"]
+    engine --> response["门户过滤公开 JSON，并转发玩家 Cookie"]
+    response --> player{"成功响应包含 player？"}
+    player -->|是| overview[显示账号概览]
+    player -->|否| form["显示登录页；注册成功则提示登录"]
+    check -->|校验失败| error["显示错误，恢复表单操作"]
+    auth -->|拒绝或异常| error
+    engine -->|请求失败| error
+```
+
+登录后，会话 Cookie 由浏览器保存并自动随本站请求发送，JavaScript 不读取 HttpOnly Cookie。注册是否自动登录取决于引擎策略，因此页面以返回的 `player` 判断。后端返回的 `returnUrl` 经白名单校验，账号概览中的“继续”链接用于回到游玩或创作页面。
+
+| 本站 API | 输入 | 页面行为 |
+| --- | --- | --- |
+| `GET /api/auth/session` | 无账号正文 | 首次加载时恢复会话 |
+| `POST /api/auth/register` | `username`、`displayName`、`password` | 根据返回的 `player` 显示概览或提示登录 |
+| `POST /api/auth/login` | `username`、`password` | 登录成功后显示账号概览 |
+| `POST /api/auth/logout` | 空 JSON 对象 | 成功后返回登录页 |
+| `PATCH /api/auth/profile` | `displayName` | 成功后更新昵称 |
+| `POST /api/auth/password` | `currentPassword`、`newPassword` | 成功后提示重新登录 |
+
+以上路径都相对于门户前缀；使用 `dev:path` 时，登录接口为 `/accounts/api/auth/login`。`confirmPassword` 仅在页面校验，不发送给引擎。
+
 ## 修改入口
 
 | 文件或目录 | 用途 |
@@ -61,11 +121,7 @@ npm run dev:path
 | `lib/shared/account-types.ts` | 可公开的账号类型 |
 | `scripts/security-headers.mjs` | 页面安全策略 |
 
-先读页面、视图组合和 hook，即可了解界面流程。请求链路为：
-
-```text
-页面 → client/account-api → app/api → server/account-api → 引擎调用 → 玩家服务
-```
+先读页面、视图组合和 hook，即可了解界面流程。
 
 路径别名在 `tsconfig.json` 中配置。页面可用 `useAccount()` 管理完整账号流程，也可在浏览器事件中直接调用：
 

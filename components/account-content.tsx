@@ -3,10 +3,11 @@ import { LoginForm } from '@components/login-form';
 import { RegisterForm } from '@components/register-form';
 import { ProfileForm } from '@components/profile-form';
 import { PasswordForm } from '@components/password-form';
-import type { useAccount } from '@hooks/use-account';
+
+import type { AccountController } from '@hooks/use-account';
 
 /** 按当前视图展示账号内容，操作与会话状态由 useAccount 管理。 */
-export function AccountContent({ account }:{ account:ReturnType<typeof useAccount> }) {
+export function AccountContent({ account }:{ account:AccountController }) {
     const { session, view, isBusy, show } = account;
 
     switch (view) {

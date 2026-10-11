@@ -28,9 +28,9 @@ export interface AuthHandlerOptions {
 /**
  * HTTP 路由使用的账号请求入口：固定操作 → 来源校验 → 字段校验 → 上游 → 公开响应。
  * @param request 浏览器请求，不信任其内部鉴权头或任意上游地址。
- * @param name 必须是共享契约中的操作名；未知操作返回 404。
+ * @param name 必须是后端契约中的操作名；未知操作返回 404。
  * @returns 无缓存的 JSON 响应，保留上游状态码及支持的玩家 Cookie。
- * 扩展功能时同步更新共享契约、字段校验、响应白名单和回归测试。
+ * 扩展功能时同步更新后端契约、字段校验、响应白名单和回归测试。
  */
 export async function handleAuth(
     request:Request,

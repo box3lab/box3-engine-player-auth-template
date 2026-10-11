@@ -1,5 +1,5 @@
 import 'server-only';
-import { isIP } from 'node:net';
+import { isIP as isIp } from 'node:net';
 
 import { playerCookieHeader } from '@engine/session-cookies';
 import { getAuthOperation, type AuthOperation } from '@engine/auth-contract';
@@ -203,7 +203,7 @@ export function createForwardedHeaders({
         )
             .split(',')[0]
             .trim();
-        if (isIP(ip)) {
+        if (isIp(ip)) {
             headers.set('X-Forwarded-For', ip);
             headers.set('X-Real-IP', ip);
         }

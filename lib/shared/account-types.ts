@@ -10,3 +10,7 @@ export type Session = {
 export type Navigation = { source?:string; returnUrl?:string };
 export type Credentials = { username:string; password:string };
 export type Registration = Credentials & { displayName:string };
+
+/** 昵称与改密请求的公开输入；确认密码只属于表单，不发送到引擎。 */
+export type ProfileUpdate = { displayName:string };
+export type PasswordChange = { currentPassword:string; newPassword:string };

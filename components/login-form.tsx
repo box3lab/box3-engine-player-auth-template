@@ -1,4 +1,7 @@
-import { AccountForm, Field, value } from '@components/account-form';
+import { AccountForm } from '@components/account-form';
+import { FormField } from '@components/form-field';
+import { readFormText } from '@components/form-values';
+
 import type { Credentials } from '@shared/account-types';
 
 /**
@@ -19,19 +22,19 @@ export function LoginForm({
             button='登录并继续'
             action={(data) =>
                 onLogin({
-                    username: value(data, 'username'),
-                    password: value(data, 'password'),
+                    username: readFormText(data, 'username'),
+                    password: readFormText(data, 'password'),
                 })
             }
         >
-            <Field
+            <FormField
                 label='玩家账号'
                 name='username'
                 placeholder='输入你的玩家账号'
                 maxLength={32}
                 autoComplete='username'
             />
-            <Field
+            <FormField
                 label='密码'
                 name='password'
                 type='password'

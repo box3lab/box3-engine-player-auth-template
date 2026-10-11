@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { accounts } from '@client/account-api';
-import type { Credentials, Registration, Session } from '@shared/account-types';
+
+import type {
+    Credentials,
+    Registration,
+    Session,
+    PasswordChange,
+    ProfileUpdate,
+} from '@shared/account-types';
+
+export type RegistrationFormInput = Registration & { confirmPassword:string };
+export type PasswordFormInput = PasswordChange & { confirmPassword:string };
 
 export type AccountView = 'login' | 'register' | 'overview' | 'profile' | 'password';
 function readNavigation() {
@@ -95,7 +105,7 @@ export function useAccount() {
                 applySession(await accounts.login({ ...input, ...readNavigation() }));
             }),
         /** 先确认两次密码一致，再注册；confirmPassword 不会发送到后端。 */
-        register: (input:Registration & { confirmPassword:string }) =>
+        register: (input:RegistrationFormInput) =>
             run(async () => {
                 if (input.password !== input.confirmPassword) {
                     throw new Error('两次密码不一致');
@@ -118,7 +128,7 @@ export function useAccount() {
                 show('login');
             }),
         /** 更新昵称并同步 player，成功后返回概览。 */
-        updateProfile: (input:{ displayName:string }) =>
+        updateProfile: (input:ProfileUpdate) =>
             run(async () => {
                 const result = await accounts.updateProfile(input);
                 setSession((current) => ({ ...current, player: result.player }));
@@ -126,11 +136,7 @@ export function useAccount() {
                 setMessage('昵称已保存');
             }),
         /** 校验确认密码并改密，成功后清空玩家展示并提示重新登录。 */
-        changePassword: (input:{
-            currentPassword:string;
-            newPassword:string;
-            confirmPassword:string;
-        }) =>
+        changePassword: (input:PasswordFormInput) =>
             run(async () => {
                 if (input.newPassword !== input.confirmPassword) {
                     throw new Error('两次新密码不一致');
@@ -145,3 +151,6 @@ export function useAccount() {
             }),
     };
 }
+
+/** 页面和视图组件依赖的账号控制器类型。 */
+export type AccountController = ReturnType<typeof useAccount>;

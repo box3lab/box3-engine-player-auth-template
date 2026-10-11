@@ -1,4 +1,12 @@
-import type { Session, Player, Navigation, Credentials, Registration } from '@shared/account-types';
+import type {
+    Session,
+    Player,
+    Navigation,
+    Credentials,
+    Registration,
+    ProfileUpdate,
+    PasswordChange,
+} from '@shared/account-types';
 
 export type { Session, Player } from '@shared/account-types';
 
@@ -110,8 +118,7 @@ export const accounts = {
      * 操作目标取决于有效会话，不能传玩家 ID 来修改其他玩家。
      * @example const { player } = await accounts.updateProfile({ displayName });
      */
-    updateProfile: (input:{ displayName:string }) =>
-        request<{ player:Player }>('profile', input),
+    updateProfile: (input:ProfileUpdate) => request<{ player:Player }>('profile', input),
     /**
      * 使用当前密码修改已登录账号的密码，完成后需要重新登录。
      * @param input currentPassword 为当前密码，newPassword 为 10–128 字符新密码。
@@ -119,6 +126,5 @@ export const accounts = {
      * @returns 上游操作结果；成功后页面应清空会话展示并返回登录界面。
      * @example await accounts.changePassword({ currentPassword, newPassword });
      */
-    changePassword: (input:{ currentPassword:string; newPassword:string }) =>
-        request<{ ok?:boolean }>('password', input),
+    changePassword: (input:PasswordChange) => request<{ ok?:boolean }>('password', input),
 };

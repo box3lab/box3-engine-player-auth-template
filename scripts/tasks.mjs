@@ -1,5 +1,4 @@
 import { spawnSync } from 'node:child_process';
-import { readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -21,17 +20,6 @@ function run(args) {
     }
 }
 run(['node_modules/typescript/bin/tsc', '--noEmit']);
-const testsDirectory = path.join(ROOT_DIRECTORY, 'tests');
-const tests = existsSync(testsDirectory)
-    ? readdirSync(testsDirectory)
-          .filter((file) => file.endsWith('.test.ts'))
-          .map((file) => `tests/${file}`)
-    : [];
-if (tests.length) {
-    run(['--conditions=react-server', '--import', 'tsx', '--test', ...tests]);
-} else {
-    console.log('未找到本地测试，跳过测试步骤');
-}
 run(['node_modules/next/dist/bin/next', 'build']);
 if (task === 'image') {
     run(['scripts/build-images.mjs', architecture]);

@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 /** 表单动作应返回是否成功；false 会保留输入，供玩家检查并重试。 */
 export type FormAction = (data:FormData) => Promise<boolean>;
@@ -41,16 +41,3 @@ export function AccountForm({
         </form>
     );
 }
-/** 带可访问标签的必填输入框；可通过 required={false} 改为可选字段。 */
-export function Field({
-    label,
-    ...input
-}:InputHTMLAttributes<HTMLInputElement> & { label:string }) {
-    return (
-        <label>
-            {label}
-            <input required {...input} />
-        </label>
-    );
-}
-export const value = (data:FormData, field:string) => String(data.get(field) || '');

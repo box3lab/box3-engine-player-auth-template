@@ -1,4 +1,5 @@
 'use client';
+
 import { useAccount, type AccountView } from '@hooks/use-account';
 import { AccountContent } from '@components/account-content';
 

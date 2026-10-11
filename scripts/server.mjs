@@ -1,40 +1,8 @@
 import { createServer } from 'node:http';
 import { loadEnvFile } from 'node:process';
-import { randomBytes } from 'node:crypto';
 import { StringDecoder } from 'node:string_decoder';
 
-/**
- * CSP is generated per request so Next can apply a fresh nonce to its scripts.
- * @param {boolean} isDevelopment
- * @param {Record<string, string | undefined>} env
- */
-function securityHeaders(isDevelopment, env = process.env) {
-    const nonce = randomBytes(16).toString('base64');
-    const ancestors = new Set(["'self'", 'http://tauri.localhost', 'tauri://localhost']);
-    for (const raw of [env.BOX_PLAY_PUBLIC_URL, env.BOX_CREATOR_PUBLIC_URL]) {
-        try {
-            const url = new URL(raw);
-            if (['http:', 'https:'].includes(url.protocol) && !url.username && !url.password) {
-                ancestors.add(url.origin);
-            }
-        } catch {
-            /* Unconfigured origins are not authorized to embed the page. */
-        }
-    }
-    const csp = [
-        "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}'${isDevelopment ? " 'unsafe-eval'" : ''}`,
-        "style-src 'self' 'unsafe-inline'",
-        "img-src 'self' data:",
-        "font-src 'self'",
-        `connect-src 'self'${isDevelopment ? ' ws: wss:' : ''}`,
-        "object-src 'none'",
-        "base-uri 'self'",
-        "form-action 'self'",
-        `frame-ancestors ${[...ancestors].join(' ')}`,
-    ].join('; ');
-    return { nonce, csp };
-}
+import { securityHeaders } from './security-headers.mjs';
 
 const isDevelopment = process.argv.includes('--dev');
 process.env.NODE_ENV = isDevelopment ? 'development' : 'production';

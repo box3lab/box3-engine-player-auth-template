@@ -9,7 +9,7 @@ COPY client ./client
 COPY server ./server
 COPY components ./components
 COPY hooks ./hooks
-COPY scripts/server.mjs ./scripts/
+COPY scripts/server.mjs scripts/security-headers.mjs ./scripts/
 COPY next.config.mjs tsconfig.json ./
 RUN node node_modules/next/dist/bin/next build && npm prune --omit=dev --ignore-scripts
 
@@ -19,7 +19,7 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOST=0.0.0.0 PORT=3214
 COPY --from=build --chown=node:node /build/node_modules ./node_modules
 COPY --from=build --chown=node:node /build/.next ./.next
 COPY --from=build --chown=node:node /build/package.json /build/next.config.mjs ./
-COPY --from=build --chown=node:node /build/scripts/server.mjs ./scripts/
+COPY --from=build --chown=node:node /build/scripts ./scripts/
 COPY --chown=node:node LICENSE ./LICENSE
 USER node
 EXPOSE 3214

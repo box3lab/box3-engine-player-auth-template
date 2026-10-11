@@ -1,4 +1,8 @@
-import { AccountForm, Field, value } from '@components/account-form';
+import { AccountForm } from '@components/account-form';
+import { FormField } from '@components/form-field';
+import { readFormText } from '@components/form-values';
+
+import type { ProfileUpdate } from '@shared/account-types';
 
 /**
  * 昵称表单，供服主调整展示和布局。
@@ -12,15 +16,15 @@ export function ProfileForm({
 }:{
     isBusy:boolean;
     displayName:string;
-    onSave:(input:{ displayName:string }) => Promise<boolean>;
+    onSave:(input:ProfileUpdate) => Promise<boolean>;
 }) {
     return (
         <AccountForm
             isBusy={isBusy}
             button='保存昵称'
-            action={(data) => onSave({ displayName: value(data, 'displayName') })}
+            action={(data) => onSave({ displayName: readFormText(data, 'displayName') })}
         >
-            <Field
+            <FormField
                 label='昵称'
                 name='displayName'
                 defaultValue={displayName}

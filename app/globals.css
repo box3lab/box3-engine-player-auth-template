@@ -1,225 +1,225 @@
 :root {
-  color-scheme: light;
-  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  color: #263222;
-  background: #f5f7f1;
-  font-synthesis: none;
+    color-scheme: light;
+    font-family: Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    color: #263222;
+    background: #f5f7f1;
+    font-synthesis: none;
 }
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 body {
-  margin: 0;
+    margin: 0;
 }
 main {
-  min-height: 100dvh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 32px 20px;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 20px;
 }
 .card {
-  width: 100%;
-  max-width: 420px;
-  padding: 34px;
-  background: #fff;
-  border: 1px solid #e3e8dc;
-  border-radius: 20px;
-  box-shadow: 0 16px 55px #283b1910;
+    width: 100%;
+    max-width: 420px;
+    padding: 34px;
+    background: #fff;
+    border: 1px solid #e3e8dc;
+    border-radius: 20px;
+    box-shadow: 0 16px 55px #283b1910;
 }
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 20px;
-  font-weight: 800;
-  margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 26px;
 }
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  background: #f4b840;
-  color: white;
-  border-radius: 9px;
-  font-size: 25px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    background: #f4b840;
+    color: white;
+    border-radius: 9px;
+    font-size: 25px;
 }
 h1 {
-  font-size: 26px;
-  font-weight: 650;
-  letter-spacing: -0.5px;
-  margin: 0;
+    font-size: 26px;
+    font-weight: 650;
+    letter-spacing: -0.5px;
+    margin: 0;
 }
 .message {
-  font-size: 13px;
-  color: #a44927;
-  white-space: pre-line;
-  line-height: 1.6;
-  margin: 20px 0 12px;
+    font-size: 13px;
+    color: #a44927;
+    white-space: pre-line;
+    line-height: 1.6;
+    margin: 20px 0 12px;
 }
 .message:empty {
-  margin: 24px 0 0;
+    margin: 24px 0 0;
 }
 fieldset {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
 }
 legend {
-  padding: 24px 0 12px;
-  font-weight: 600;
-  font-size: 14px;
+    padding: 24px 0 12px;
+    font-weight: 600;
+    font-size: 14px;
 }
 label {
-  display: grid;
-  gap: 9px;
-  margin-bottom: 19px;
-  font-size: 13px;
-  font-weight: 550;
-  color: #44503c;
+    display: grid;
+    gap: 9px;
+    margin-bottom: 19px;
+    font-size: 13px;
+    font-weight: 550;
+    color: #44503c;
 }
 input {
-  width: 100%;
-  padding: 14px 15px;
-  border: 1px solid #dfe4d9;
-  border-radius: 10px;
-  background: #fff;
-  color: #263222;
-  font: inherit;
-  font-size: 14px;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid #dfe4d9;
+    border-radius: 10px;
+    background: #fff;
+    color: #263222;
+    font: inherit;
+    font-size: 14px;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
 }
 input::placeholder {
-  color: #a0a799;
-  font-weight: 400;
+    color: #a0a799;
+    font-weight: 400;
 }
 input:focus {
-  outline: 0;
-  border-color: #8caa6f;
-  box-shadow: 0 0 0 3px #e7eedf;
+    outline: 0;
+    border-color: #8caa6f;
+    box-shadow: 0 0 0 3px #e7eedf;
 }
 button,
 .button {
-  display: block;
-  width: 100%;
-  padding: 14px 18px;
-  border: 0;
-  border-radius: 10px;
-  background: #344c2f;
-  color: white;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.15s;
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: #344c2f;
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
 }
 button span {
-  float: right;
+    float: right;
 }
 button:hover,
 .button:hover {
-  background: #263d21;
+    background: #263d21;
 }
 .secondary {
-  margin-top: 16px;
-  background: transparent;
-  color: #6b7b5e;
-  font-size: 13px;
+    margin-top: 16px;
+    background: transparent;
+    color: #6b7b5e;
+    font-size: 13px;
 }
 .secondary:hover {
-  background: #edf1e7;
+    background: #edf1e7;
 }
 :focus-visible {
-  outline: 2px solid #557647;
-  outline-offset: 3px;
+    outline: 2px solid #557647;
+    outline-offset: 3px;
 }
 button:disabled {
-  opacity: 0.5;
-  cursor: wait;
+    opacity: 0.5;
+    cursor: wait;
 }
 small {
-  color: #899080;
+    color: #899080;
 }
 @media (max-width: 760px) {
-  main {
-    padding: 24px 16px;
-  }
-  .card {
-    padding: 28px 24px;
-  }
+    main {
+        padding: 24px 16px;
+    }
+    .card {
+        padding: 28px 24px;
+    }
 }
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-  }
+    * {
+        transition: none !important;
+    }
 }
 .account-summary {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 26px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 26px 0;
 }
 .avatar {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: #edf2e5;
-  color: #4c6540;
-  font-size: 21px;
-  font-weight: 650;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #edf2e5;
+    color: #4c6540;
+    font-size: 21px;
+    font-weight: 650;
 }
 .account-summary strong {
-  display: block;
-  font-size: 17px;
+    display: block;
+    font-size: 17px;
 }
 .account-summary small {
-  display: block;
-  margin-top: 5px;
-  font-size: 12px;
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
 }
 .account-actions {
-  margin-top: 22px;
-  border: 1px solid #e5e9e0;
-  border-radius: 12px;
-  overflow: hidden;
+    margin-top: 22px;
+    border: 1px solid #e5e9e0;
+    border-radius: 12px;
+    overflow: hidden;
 }
 .setting {
-  border-radius: 0;
-  background: white;
-  color: #43543a;
-  text-align: left;
-  font-weight: 500;
-  padding: 17px 16px;
+    border-radius: 0;
+    background: white;
+    color: #43543a;
+    text-align: left;
+    font-weight: 500;
+    padding: 17px 16px;
 }
 .setting + .setting {
-  border-top: 1px solid #e5e9e0;
+    border-top: 1px solid #e5e9e0;
 }
 .setting:hover {
-  background: #f6f8f2;
+    background: #f6f8f2;
 }
 .setting span {
-  color: #93a087;
-  font-size: 19px;
-  line-height: 1;
+    color: #93a087;
+    font-size: 19px;
+    line-height: 1;
 }
 .back {
-  background: transparent;
-  color: #738366;
-  padding: 0;
-  text-align: left;
-  width: auto;
-  font-size: 12px;
-  margin: 16px 0 22px;
+    background: transparent;
+    color: #738366;
+    padding: 0;
+    text-align: left;
+    width: auto;
+    font-size: 12px;
+    margin: 16px 0 22px;
 }
 .back:hover {
-  background: transparent;
-  color: #344c2f;
+    background: transparent;
+    color: #344c2f;
 }

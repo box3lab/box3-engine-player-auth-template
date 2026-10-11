@@ -1,5 +1,8 @@
-import { AccountForm, Field, value } from '@components/account-form';
-import type { Registration } from '@shared/account-types';
+import { AccountForm } from '@components/account-form';
+import { FormField } from '@components/form-field';
+import { readFormText } from '@components/form-values';
+
+import type { RegistrationFormInput } from '@hooks/use-account';
 
 /**
  * 注册表单，供服主调整展示和布局。
@@ -11,7 +14,7 @@ export function RegisterForm({
     onRegister,
 }:{
     isBusy:boolean;
-    onRegister:(input:Registration & { confirmPassword:string }) => Promise<boolean>;
+    onRegister:(input:RegistrationFormInput) => Promise<boolean>;
 }) {
     return (
         <AccountForm
@@ -19,14 +22,14 @@ export function RegisterForm({
             button='创建账号'
             action={(data) =>
                 onRegister({
-                    username: value(data, 'username'),
-                    displayName: value(data, 'displayName'),
-                    password: value(data, 'password'),
-                    confirmPassword: value(data, 'confirmPassword'),
+                    username: readFormText(data, 'username'),
+                    displayName: readFormText(data, 'displayName'),
+                    password: readFormText(data, 'password'),
+                    confirmPassword: readFormText(data, 'confirmPassword'),
                 })
             }
         >
-            <Field
+            <FormField
                 label='玩家账号'
                 name='username'
                 placeholder='输入你的玩家账号'
@@ -34,8 +37,8 @@ export function RegisterForm({
                 pattern='[A-Za-z][A-Za-z0-9_]{2,31}'
                 autoComplete='username'
             />
-            <Field label='昵称' name='displayName' maxLength={32} autoComplete='nickname' />
-            <Field
+            <FormField label='昵称' name='displayName' maxLength={32} autoComplete='nickname' />
+            <FormField
                 label='密码'
                 name='password'
                 type='password'
@@ -44,7 +47,7 @@ export function RegisterForm({
                 maxLength={128}
                 autoComplete='new-password'
             />
-            <Field
+            <FormField
                 label='确认密码'
                 name='confirmPassword'
                 type='password'

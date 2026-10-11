@@ -1,4 +1,8 @@
-import { AccountForm, Field, value } from '@components/account-form';
+import { AccountForm } from '@components/account-form';
+import { FormField } from '@components/form-field';
+import { readFormText } from '@components/form-values';
+
+import type { PasswordFormInput } from '@hooks/use-account';
 
 /**
  * 密码表单，供服主调整展示和布局。
@@ -10,11 +14,7 @@ export function PasswordForm({
     onSave,
 }:{
     isBusy:boolean;
-    onSave:(input:{
-        currentPassword:string;
-        newPassword:string;
-        confirmPassword:string;
-    }) => Promise<boolean>;
+    onSave:(input:PasswordFormInput) => Promise<boolean>;
 }) {
     return (
         <AccountForm
@@ -22,19 +22,19 @@ export function PasswordForm({
             button='修改密码'
             action={(data) =>
                 onSave({
-                    currentPassword: value(data, 'currentPassword'),
-                    newPassword: value(data, 'newPassword'),
-                    confirmPassword: value(data, 'confirmPassword'),
+                    currentPassword: readFormText(data, 'currentPassword'),
+                    newPassword: readFormText(data, 'newPassword'),
+                    confirmPassword: readFormText(data, 'confirmPassword'),
                 })
             }
         >
-            <Field
+            <FormField
                 label='当前密码'
                 name='currentPassword'
                 type='password'
                 autoComplete='current-password'
             />
-            <Field
+            <FormField
                 label='新密码'
                 name='newPassword'
                 type='password'
@@ -42,7 +42,7 @@ export function PasswordForm({
                 maxLength={128}
                 autoComplete='new-password'
             />
-            <Field
+            <FormField
                 label='确认新密码'
                 name='confirmPassword'
                 type='password'

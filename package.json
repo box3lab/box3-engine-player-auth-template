@@ -1,7 +1,7 @@
 {
   "name": "box3-player-auth-template",
   "displayName": "BOX3 Player Auth Template",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "scripts": {

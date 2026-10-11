@@ -1,0 +1,25 @@
+{
+  "name": "box3-player-auth-template",
+  "displayName": "BOX3 Player Auth Template",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "check": "node scripts/tasks.mjs check",
+    "dev": "node scripts/server.mjs --dev",
+    "image": "node scripts/tasks.mjs image"
+  },
+  "dependencies": {
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "7.0.2"
+  }
+}

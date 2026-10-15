@@ -10,6 +10,7 @@ import {
     readAuthInput,
     createForwardedHeaders,
 } from '@engine/auth-request';
+import { loginTransferTarget } from '@engine/login-transfer';
 import { reply, authResponse } from '@engine/auth-response';
 
 /** 服主的鉴权策略只能在后端执行，输入字段已经完成基础校验。 */
@@ -68,7 +69,7 @@ export async function handleAuth(
                 message: '登录服务未配置完成，请检查开发地址或启动器运行配置',
             });
         }
-        const { payload, target } = await readAuthInput(request, operation);
+        const { payload, target, transfer } = await readAuthInput(request, operation);
         if (options.authorize) {
             try {
                 const denied = await options.authorize({
@@ -96,8 +97,10 @@ export async function handleAuth(
             operation,
             headers: createForwardedHeaders({ request, publicUrl, isTrustedProxy }),
             payload: request.method === 'GET' ? undefined : payload,
+            navigation: config.isDevelopmentPortal && transfer ? { source: transfer.source, returnUrl: target || '', transferState: transfer.state, transferChallenge: transfer.challenge } : undefined,
         });
-        return await authResponse({ response, request, operation, config, target });
+        const transferred = await loginTransferTarget(request, response, config, transfer);
+        return await authResponse({ response, request, operation, config, target: transferred || target });
     } catch (error) {
         if (error instanceof InputError) {
             return reply(error.status, {

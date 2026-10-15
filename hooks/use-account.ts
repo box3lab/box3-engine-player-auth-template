@@ -19,6 +19,8 @@ function readNavigation() {
     return {
         source: query.get('source') || '',
         returnUrl: query.get('returnUrl') || '',
+        transferState: query.get('transferState') || '',
+        transferChallenge: query.get('transferChallenge') || '',
     };
 }
 /**
@@ -80,6 +82,10 @@ export function useAccount() {
         void run(async () => {
             const result = await accounts.session(readNavigation());
             if (isMounted.current) {
+                if (result.player && result.returnUrl && readNavigation().transferState) {
+                    window.location.assign(result.returnUrl);
+                    return;
+                }
                 setSession(result);
                 setView(result.player ? 'overview' : 'login');
             }
@@ -89,6 +95,10 @@ export function useAccount() {
         };
     }, []);
     function applySession(result:Session) {
+        if (result.player && result.returnUrl && readNavigation().transferState) {
+            window.location.assign(result.returnUrl);
+            return;
+        }
         setSession((current) => ({ ...current, ...result }));
         setView(result.player ? 'overview' : 'login');
     }

@@ -7,7 +7,7 @@ export type Session = {
     returnUrl?:string;
 };
 /** 回跳仅用于导航，不能传引擎内部地址；后端会再次验证同源白名单。 */
-export type Navigation = { source?:string; returnUrl?:string };
+export type Navigation = { source?:string; returnUrl?:string; transferState?:string; transferChallenge?:string };
 export type Credentials = { username:string; password:string };
 export type Registration = Credentials & { displayName:string };
 

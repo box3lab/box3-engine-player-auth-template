@@ -16,10 +16,12 @@ export function createPlayerServiceClient(config:PortalConfig) {
             operation,
             headers,
             payload,
+            navigation,
         }:{
             operation:AuthOperation;
             headers:Headers;
             payload?:object;
+            navigation?:Record<string, string>;
         }):Promise<Response> {
             const forwarded = new Headers(headers);
             const route = config.isDevelopmentPortal ? 'auth' : 'player-auth';
@@ -37,10 +39,14 @@ export function createPlayerServiceClient(config:PortalConfig) {
             if (payload) {
                 forwarded.set('Content-Type', 'application/json');
             }
-            return fetch(new URL(`${prefix}/api/${route}/${operation}`, config.upstream), {
+            const url = new URL(`${prefix}/api/${route}/${operation}`, config.upstream);
+            if (config.isDevelopmentPortal && navigation && getAuthOperation(operation)!.method === 'GET') {
+                url.search = new URLSearchParams(navigation).toString();
+            }
+            return fetch(url, {
                 method: getAuthOperation(operation)!.method,
                 headers: forwarded,
-                body: payload ? JSON.stringify(payload) : undefined,
+                body: payload ? JSON.stringify(config.isDevelopmentPortal ? { ...payload, ...navigation } : payload) : undefined,
                 cache: 'no-store',
                 redirect: 'manual',
                 signal: AbortSignal.timeout(config.timeoutMs),

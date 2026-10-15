@@ -171,7 +171,7 @@ docker load -i dist/box3-player-auth-portal-1.0.0-arm64.tar.gz
 - **502 / 504**：确认玩家服务和原门户已启动，开发代理地址及其子路径正确。
 - **503**：检查开发地址、生产运行配置或自定义鉴权服务。
 - **页面一直加载或资源 404**：核对访问路径，重启开发服务并刷新，查看浏览器脚本和会话请求错误。
-- **登录后仍未登录**：开发访问统一使用 `127.0.0.1` 或 `localhost`；生产核对公开域名、HTTPS 与 Cookie 路径。
+- **登录后仍未登录**：同步更新引擎的 Play、Creator、Player Service 和本模板。独立域名/IP 使用一次性登录码交换，页面须保留 `transferState`、`transferChallenge` 并使用后端返回的 `returnUrl`。开发联调跨站登录时，还需配置 `BOX_PLAY_PUBLIC_URL` / `BOX_CREATOR_PUBLIC_URL` 为引擎实际公网地址。
 
 `/api/health-check` 成功只表示门户能响应；`/api/auth/session` 成功才说明账号上游链路可用。使用子路径时，这两个地址也要加上前缀。账号操作请使用专门的测试账号。
 

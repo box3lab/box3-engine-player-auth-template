@@ -121,7 +121,7 @@ export { parseHttpUrl };
 export async function readAuthInput(request:Request, name:AuthOperation) {
     const body = request.method === 'GET' ? {} : await readBody(request);
 
-    const navigationFields = name === 'login' || name === 'register' ? ['source', 'returnUrl'] : [];
+    const navigationFields = name === 'login' || name === 'register' ? ['source', 'returnUrl', 'transferState', 'transferChallenge'] : [];
     if (
         Object.keys(body).some(
             (field) =>
@@ -171,7 +171,16 @@ export async function readAuthInput(request:Request, name:AuthOperation) {
     } catch {
         target = resolveReturnUrl(body.source ?? query.get('source'), '');
     }
-    return { payload, target };
+    const source = String(body.source ?? query.get('source') ?? '');
+    const state = String(body.transferState ?? query.get('transferState') ?? '');
+    const challenge = String(body.transferChallenge ?? query.get('transferChallenge') ?? '');
+    const transfersLogin = ['login', 'register', 'session'].includes(name);
+    if (transfersLogin && (state || challenge) &&
+        (!['play', 'creator'].includes(source) || !/^[A-Za-z0-9_-]{43}$/.test(state) || !/^[A-Za-z0-9_-]{43}$/.test(challenge))) {
+        throw new InputError(400, '登录请求无效，请从应用重新登录');
+    }
+    const transfer = transfersLogin && state && challenge ? { source, state, challenge } : undefined;
+    return { payload, target, transfer };
 }
 /**
  * 只构造账号服务需要的转发头，忽略客户端自行提供的引擎鉴权头。
